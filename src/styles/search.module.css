@@ -1,0 +1,14 @@
+.optgroup1 {
+  background-color: green;
+  font-size: 30px;
+  color: red;
+}
+
+.ant-select-item-group {
+  font-size: "30px";
+  color: red;
+}
+
+.ant-select-selection__placeholder {
+  color: blue;
+}
