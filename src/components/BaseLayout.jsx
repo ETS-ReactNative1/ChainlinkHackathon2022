@@ -171,9 +171,9 @@ function Basediv({ children }) {
                   🛒 Explore Market
 
                 </Menu.Item>
-                <Menu.Item key="RestaurantVerification">
-                  <Link href="/restaurantverification">
-                    <a>✔️ Restaurant Verification</a>
+                <Menu.Item key="ExpertVerification">
+                  <Link href="/expertverification">
+                    <a>✔️ Expert Verification</a>
                   </Link>
                 </Menu.Item>
 
@@ -464,10 +464,10 @@ function Basediv({ children }) {
                   </Link>
 
                 </Menu.Item>
-                <Menu.Item key="RestaurantVerification">
-                  <Link href="/restaurantverification">
+                <Menu.Item key="ExpertVerification">
+                  <Link href="/expertverification">
 
-                    <a>✔️ Restaurant Verification</a>
+                    <a>✔️ Expert Verification</a>
                   </Link>
 
                 </Menu.Item>

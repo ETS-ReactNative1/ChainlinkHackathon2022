@@ -39,8 +39,7 @@ function Created() {
   const [NumberNFTs, setNumberNFTs] = useState(1);
   const [RoyaltyPercent, setRoyaltyPercentage] = useState(0);
 
-  
-  const { chainId,  marketAddress,contractABI, walletAddress } = useMoralisDapp();
+  const { chainId,  marketAddress,contractABI, walletAddress  ,CompanyWallet  } = useMoralisDapp();
   const contractProcessor = useWeb3ExecuteFunction();
   //const listItemFunction = "TLuNFTMarket";
   const listItemFunction = "createMarketItem";
@@ -85,7 +84,28 @@ function Created() {
     }, secondsToGo * 1000);
 
   }
+  function succMint() {
+    let secondsToGo = 5;
+    const modal = Modal.success({
+      title: "Success!",
+      content: `Your NFT was succesfully minted`,
+    });
+    setTimeout(() => {
+      modal.destroy();
+    }, secondsToGo * 1000);
 
+  }
+
+  function failMint() {
+    let secondsToGo = 5;
+    const modal = Modal.error({
+      title: "Error!",
+      content: `There was a minting your NFT`,
+    });
+    setTimeout(() => {
+      modal.destroy();
+    }, secondsToGo * 1000);
+  }
   function succApprove() {
     let secondsToGo = 5;
     const modal = Modal.success({
@@ -197,6 +217,70 @@ function Created() {
     //query_test(nft)
     deploy(nft, listPrice)
   }
+  async function Mintforself(nft) {
+    var addr = nft.collection.attributes.NFTsol_addr
+    if (typeof addr === 'undefined') {
+      //console.log("addr:",addr)
+
+      var token_id = await  general_deploy_to_self(nft) 
+      
+      const p = 0;
+      var royaltypercentage= String(nft.collection.attributes.royalty_percent)
+      const MumbaiNFT = Moralis.Object.extend("MumbaiNFT");
+
+      for (let i = 0; i < token_id.length; i++) {
+        var coll = new MumbaiNFT();
+        coll.set("price", String(p));
+        coll.set("tokenId_decimal",token_id[i]);
+        coll.set("nftContract",addr);
+        coll.set("image", ImageUrl);
+        coll.save();
+      }
+      const MumbaiNFTMarketplaceTable = Moralis.Object.extend("MumbaiNFTMarketplaceTable");
+
+      for (let i = 0; i < token_id.length; i++) {
+        var coll = new MumbaiNFTMarketplaceTable();
+        coll.set("price", String(p));
+        coll.set("tokenId_decimal",token_id[i]);
+        coll.set("sold",true);
+        coll.set("address",addr);
+        coll.set("owner",walletAddress);
+        coll.save();
+      }
+
+      }else {
+      //Smart contract for this collection already exists, so skip deploying step!
+      //alert("Starting general mint!")
+     var token_id = await general_mint_to_self(nft) 
+
+      
+     const p = 0;
+     var royaltypercentage= String(nft.collection.attributes.royalty_percent)
+     const MumbaiNFT = Moralis.Object.extend("MumbaiNFT");
+
+     for (let i = 0; i < token_id.length; i++) {
+       var coll = new MumbaiNFT();
+       coll.set("price", String(p));
+       coll.set("tokenId_decimal",token_id[i]);
+       coll.set("nftContract",addr);
+       coll.set("image", ImageUrl);
+       coll.save();
+     }
+
+     const MumbaiNFTMarketplaceTable = Moralis.Object.extend("MumbaiNFTMarketplaceTable");
+
+     for (let i = 0; i < token_id.length; i++) {
+       var coll = new MumbaiNFTMarketplaceTable();
+       coll.set("price", String(p));
+       coll.set("tokenId_decimal",token_id[i]);
+       coll.set("sold",true);
+       coll.set("address",addr);
+       coll.set("owner",walletAddress);
+       coll.save();
+     }
+
+    }
+  }
 
   const handleSellClick2 = (nft, index) => {
     console.log("nasty index clicked!:", index)
@@ -238,11 +322,11 @@ function Created() {
   async function list2(nft, listPrice, token_id_arr) {
 
     setLoading(true);
-    //const p = listPrice * ("1e" + 18);
+    const p = listPrice * ("1e" + 18);
     console.log("nft.collection.attributes.NFTsol_addr:", nft.collection.attributes.NFTsol_addr)
     console.log(token_id_arr)
-    const p = listPrice * ("1e" + 18);
 
+    console.log(p)
 
     const ops = {
       contractAddress: marketAddress,
@@ -311,11 +395,187 @@ function Created() {
     return token_ids_arr
 
   }
+  async function general_mint_to_self(nft) {
+    console.log("nft.collection.attributes.NFTsol_addr:", nft.collection.attributes.NFTsol_addr)
+    const web3Modal = new Web3Modal()
+    const connection = await web3Modal.connect()
+    const provider = new ethers.providers.Web3Provider(connection)
+    const signer = provider.getSigner()
+    let contract = new ethers.Contract(nft.collection.attributes.NFTsol_addr, NFT.abi, signer)
 
+    //let transaction = await contract.createToken(nft.uri)
+   // alert("about to call create multi token function!")
+    console.log("NUMBER OF NFTS:", NumberNFTs)
+    console.log("typeof:", typeof (NumberNFTs))
+    //alert("create multi Token about to be called!!!")
+    console.log(parseFloat(nft.description.split("Bet Amount:")[1])* ("1e" + 18))
+
+    const ops = {
+      contractAddress: nft.collection.attributes.NFTsol_addr,
+      functionName: "createmultiTokenself",
+      abi: NFT.abi,
+      params: {
+        tokenURI:nft.uri,
+        times:NumberNFTs,
+        addresses:CompanyWallet,
+        price:String(parseFloat(nft.description.split("Bet Amount:")[1])* ("1e" + 18))
+      },
+      msgValue:String(parseFloat(nft.description.split("Bet Amount:")[1])* ("1e" + 18)*NumberNFTs)
+
+    };
+    var token_ids_arr = []
+
+    await contractProcessor.fetch({
+      params: ops,
+      onSuccess: (e) => {
+        console.log("success");
+        console.log(e)
+        //addItemImage();
+        succMint();
+        let event = e.events
+
+        for (let i = 0; i < NumberNFTs; i++) {
+          token_ids_arr.push(parseInt(event[i].args.tokenId._hex, 16).toString())
+        }
+        console.log("token_ids_arr:", token_ids_arr)
+      },
+      onError: (error) => {
+        console.log("error:", error)
+        alert("ERROR:", error)
+        failMint();
+      },
+    });
+
+    //let event = tx.events[0]
+    //let value = event.args[2]
+
+
+
+    return token_ids_arr
+
+  }
   //This "general deploy" smart contract should literally only be deployed once. It's for NFTs where users don't specify any specific
   //collections. In production this is kind've dumb because it means that the first ever user will have to pay a gas fee to deploy this general
   //smart contract. This worked once so not touching it again to make it cleaner code.
+  async function general_deploy_to_self(nft) {
+    var collection_name = "General Collection";
+    var token_name = "CouponMint";
+    const web3Modal = new Web3Modal()
+    const connection = await web3Modal.connect()
+    const provider = new ethers.providers.Web3Provider(connection)
+    const signer = provider.getSigner()
+    const path = "data"
+    var factory = new ContractFactory(NFT.abi, NFT.bytecode, signer)
+    //Polygon = #1
+    //const apiConsumer2 = await factory.deploy("0xD7ACd2a9FD159E69Bb102A1ca21C9a3e3A5F771B", collection_name, token_name);
 
+    //AVAX
+    //const apiConsumer2 = await factory.deploy("0xcc937ED5ab9A614a0660262f96882Edc08Bce1c4", collection_name, token_name);
+
+    //New?
+    //const apiConsumer2 = await factory.deploy("0x3fd844415ebe0D161c322A0FDDc8107fc3B05ce1", collection_name, token_name);
+
+    //Mumbai (NEW):
+    //alert("deploying to mumbai!!!!")
+    const apiConsumer2 = await factory.deploy(marketAddress, collection_name, token_name);
+
+    var waitcontract = await apiConsumer2.deployTransaction.wait();
+    //pass in parameters here
+
+    const CollectionsTracker = Moralis.Object.extend("CollectionsTracker");
+    const query = new Moralis.Query(CollectionsTracker);
+    //query.get(nft.collection.attributes.object)
+    //query.equalTo("NFTsol_addr", nft.collection.attributes.NFTsol_addr);
+    query.get(nft.collection.id).then((res) => {
+      res.set("NFTsol_addr", apiConsumer2.address)
+      res.set("NFTsol_addr_lowercase", apiConsumer2.address.toLowerCase())
+      res.set("nft_metadata_id", nft.id2)
+
+      //alert("successfully updated nft's smart contract address")
+      res.save()
+     
+      
+
+      // The object was retrieved successfully.
+    }, (error) => {
+      // The object was not retrieved successfully.
+      // error is a Moralis.Error with an error code and message.
+    });
+
+    //let transaction = await contract.createToken(nft.uri)
+    //alert("create multi Token about to be called!!!")
+
+
+    const ops = {
+      contractAddress: apiConsumer2.address,
+      functionName: "createmultiTokenself",
+      abi: NFT.abi,
+      params: {
+        tokenURI:nft.uri,
+        times:NumberNFTs,
+        addresses:CompanyWallet,
+        price:String(parseFloat(nft.description.split("Bet Amount:")[1])* ("1e" + 18))
+      },
+      msgValue:String(parseFloat(nft.description.split("Bet Amount:")[1])* ("1e" + 18)*NumberNFTs)
+
+    };
+
+    let transaction = await contractProcessor.fetch({
+      params: ops,
+      onSuccess: () => {
+        console.log("success");
+        //addItemImage();
+        succMint();
+      },
+      onError: (error) => {
+        console.log("error:", error)
+        alert("ERROR:", error)
+        failMint();
+      },
+    });
+    console.log(transaction)
+
+    let tx = await transaction.wait()
+    //let event = tx.events[0]
+    let event = tx.events
+    //let value = event.args[2]
+    console.log("event:", event)
+    console.log("tx:", tx)
+
+    var token_ids_arr = []
+
+    for (let i = 0; i < NumberNFTs; i++) {
+      token_ids_arr.push(parseInt(event[i].args.tokenId._hex, 16).toString())
+    }
+    console.log("token_ids_arr:", token_ids_arr)
+
+    const NFTMetadata = Moralis.Object.extend("NFTMetadata");
+    const query2 = new Moralis.Query(NFTMetadata);
+    //query.get(nft.collection.attributes.object)
+    //query.equalTo("NFTsol_addr", nft.collection.attributes.NFTsol_addr);
+    const currentUser = Moralis.User.current();
+    query2.get(nft.id2).then((res) => {
+      console.log("NFT METADATA Res:")
+      //res.set("minted", "true")
+      res.set("owner", currentUser)
+      //res.set("token_id", parseInt(token_id))
+      res.set("list_price", "0")
+      res.set("NFTsol_addr", apiConsumer2.address)
+      res.set("NFTsol_addr_lowercase", apiConsumer2.address.toLowerCase())
+      res.set("Minted_wallet", walletAddress)
+
+      //alert("successfully updated nft's mint column!")
+      res.save()
+      // The object was retrieved successfully.
+    }, (error) => {
+      // The object was not retrieved successfully.
+      // error is a Moralis.Error with an error code and message.
+    });
+
+
+    return token_ids_arr;
+
+  }
   async function general_deploy(nft, listPrice) {
     var collection_name = "General Collection";
     var token_name = "CouponMint";
@@ -470,9 +730,13 @@ function Created() {
             <Button onClick={() => setVisibility(false)} type="primary" key={nftToSend?.index }>
               Cancel
             </Button>,
+            <Button onClick={() => Mintforself(nftToSend)} type="primary" key={nftToSend?.index}>
+            Mint for Self
+          </Button>,
             <Button onClick={() => handleSellClick(nftToSend, price)} type="primary" key={nftToSend?.index}>
-              List
+              Mint and List to Marketplace
             </Button>,
+  
             // <Button onClick={() => general_deploy1000(nftToSend)} type="primary">
             //   Airdrop
             // </Button>
@@ -498,17 +762,17 @@ function Created() {
 
 
 
-            <Input
-              autoFocus
-              placeholder="Listing Price in MATIC"
-              onChange={(e) => setPrice(e.target.value)}
-            />
+
             <Input
               autoFocus
               placeholder="Number of NFTs to mint"
               onChange={(e) => setNumberNFTs(e.target.value)}
             />
-
+            <Input
+              autoFocus
+              placeholder="Listing Price in MATI (ignore if minting for self)"
+              onChange={(e) => setPrice(e.target.value)}
+            />
 
           </Spin>
         </Modal>

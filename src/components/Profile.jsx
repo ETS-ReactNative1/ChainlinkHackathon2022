@@ -368,7 +368,7 @@ function Profile({ wallet_addr = "", tab_num = "collected", curr_user_match = fa
 
 
                         <div className="text-gray-500 font-medium ">{wallet_addr.slice(0, 6) + "..." + wallet_addr.slice(wallet_addr.length - 4, wallet_addr.length)}</div>
-                        <div className="text-gray-500 font-medium">Joined January 2022</div>
+                        <div className="text-gray-500 font-medium">Joined May 2022</div>
                     </div>
 
                     {/* <div>HELLO:{wallet_addr.wallet_addr.map(w => <div>{w.name}</div>)} */}
@@ -380,7 +380,7 @@ function Profile({ wallet_addr = "", tab_num = "collected", curr_user_match = fa
                     <div className="flex flex-col justify-center items-center pt-5">
                         <Tabs activeKey={tab_num} onChange={callback} className="flex flex-col justify-center items-center">
                             <TabPane tab="Collected" key="collected">
-
+asaxa
                                 {/* Content of Tab Pane 1  */}
                                 {/* <Created/> */}
 
@@ -434,7 +434,7 @@ function Profile({ wallet_addr = "", tab_num = "collected", curr_user_match = fa
 
 
                         <div className="text-gray-500 font-medium ">{Moralis.User.current().get("ethAddress").slice(0, 6) + "..." + Moralis.User.current().get("ethAddress").slice(Moralis.User.current().get("ethAddress").length - 4, Moralis.User.current().get("ethAddress").length)}</div>
-                        <div className="text-gray-500 font-medium">Joined January 2022</div>
+                        <div className="text-gray-500 font-medium">Joined May 2022</div>
                     </div>
 
                     {/* <div>HELLO:{wallet_addr.wallet_addr.map(w => <div>{w.name}</div>)} */}
@@ -486,7 +486,7 @@ function Profile({ wallet_addr = "", tab_num = "collected", curr_user_match = fa
                         </label>
                         <h1 className="font-bold text-3xl pt-4">{username}</h1>
                         <div className="text-gray-500 font-medium ">{Moralis.User.current().get("ethAddress").slice(0, 6) + "..." + Moralis.User.current().get("ethAddress").slice(Moralis.User.current().get("ethAddress").length - 4, Moralis.User.current().get("ethAddress").length)}</div>
-                        <div className="text-gray-500 font-medium">Joined January 2022</div>
+                        <div className="text-gray-500 font-medium">Joined May 2022</div>
                     </div>
                     {/* <div class='pt-7'>
                         <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" onClick={test}>  Cloud</button>

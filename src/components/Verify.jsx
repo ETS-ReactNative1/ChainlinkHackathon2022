@@ -214,33 +214,21 @@ export default function CreateItem() {
         <>
             <div className="container">
                 <div className="div">
-                    <h1 className="text-4xl font-bold mt-0 mb-2 ">Restaurant Verification Request Form</h1>
+                    <h1 className="text-4xl font-bold mt-0 mb-2 "> Expert Verification Request Form</h1>
                 </div>
 
-                <div className="block mb-2 text-sm font-medium pt-3">Thank you for your interest in CouponMint!</div>
-                <div className="block mb-2 text-sm font-medium pt-3">Please fill out the form so we can verify your business and get you started.</div>
+                <div className="block mb-2 text-sm font-medium pt-3">Thank you for your interest in being an expert at ParlayMint!</div>
+                <div className="block mb-2 text-sm font-medium pt-3">Please fill out the form below so we can verify you and get you started.</div>
 
                 <div className="form-group">
                     <div className="mb-2 pt-5">
-                        <label htmlFor="username-success" className="block mb-2 text-sm font-medium">Restaurant Name</label>
-                        <input type="text" id="username-success" className=" border  text-sm rounded-lg  block w-full p-2.5 dark:bg-green-100 dark:border-green-400" placeholder="Enter Restaurant Name"
+                        <label htmlFor="username-success" className="block mb-2 text-sm font-medium">Your Name</label>
+                        <input type="text" id="username-success" className=" border  text-sm rounded-lg  block w-full p-2.5 dark:bg-green-100 dark:border-green-400" placeholder="Enter Your Name"
                             onChange={e => updateFormInput({ ...formInput, restaurant_name: e.target.value })} />
                         {/* <p className="mt-2 text-sm text-green-600 dark:text-green-500"><span className="font-medium">Alright!</span> Collection Name available!</p> */}
                     </div>
 
-                    <div className="mb-2">
-                        <label htmlFor="username-success" className="block mb-2 text-sm font-medium">Owner</label>
-                        <input type="text" id="username-success" className=" border  text-sm rounded-lg  block w-full p-2.5 dark:bg-green-100 dark:border-green-400" placeholder="Enter Restaurant Owner"
-                            onChange={e => updateFormInput({ ...formInput, owner: e.target.value })} />
-                        {/* <p className="mt-2 text-sm text-green-600 dark:text-green-500"><span className="font-medium">Alright!</span> Collection Name available!</p> */}
-                    </div>
 
-                    <div className="mb-2">
-                        <label htmlFor="username-success" className="block mb-2 text-sm font-medium">Manager</label>
-                        <input type="text" id="username-success" className=" border  text-sm rounded-lg  block w-full p-2.5 dark:bg-green-100 dark:border-green-400" placeholder="Enter Restaurant Manager"
-                            onChange={e => updateFormInput({ ...formInput, manager: e.target.value })} />
-                        {/* <p className="mt-2 text-sm text-green-600 dark:text-green-500"><span className="font-medium">Alright!</span> Collection Name available!</p> */}
-                    </div>
 
                     <div className="mb-2">
                         <label htmlFor="username-success" className="block mb-2 text-sm font-medium">Primary Email Contact</label>
@@ -249,13 +237,7 @@ export default function CreateItem() {
                         {/* <p className="mt-2 text-sm text-green-600 dark:text-green-500"><span className="font-medium">Alright!</span> Collection Name available!</p> */}
                     </div>
 
-                    <div className="mb-2">
-                        <label htmlFor="username-success" className="block mb-2 text-sm font-medium">Restaurant Address</label>
-                        <input type="email" id="username-success" className=" border  text-sm rounded-lg  block w-full p-2.5 dark:bg-green-100 dark:border-green-400" placeholder="Enter Restaurant Street Address"
-                            onChange={e => updateFormInput({ ...formInput, address: e.target.value })} />
-                        {/* <p className="mt-2 text-sm text-green-600 dark:text-green-500"><span className="font-medium">Alright!</span> Collection Name available!</p> */}
-                    </div>
-
+     
                     <div className="mb-2">
                         <label htmlFor="username-success" className="block mb-2 text-sm font-medium">City</label>
                         <input type="email" id="username-success" className=" border  text-sm rounded-lg  block w-full p-2.5 dark:bg-green-100 dark:border-green-400" placeholder="Enter City"

@@ -39,12 +39,11 @@ function FAQ() {
                                                 
                                                 <details className="mb-4">
                                                 <summary className="font-semibold rounded-md px-4">
-                                                What is CouponMint?
+                                                What is ParlayMint?
                                                 </summary>
 
                                                 <span>
-                                                CouponMint is a peer-to-peer NFT Marketplace that allows anybody to buy and sell coupon
-NFTs to their favorite restaurants.
+                                                ParlayMint is a peer-to-peer NFT Marketplace that allows anybody to mint and trade Parlay-based NFTs
                                                 </span>
                                             </details>
                                             </div>
@@ -58,9 +57,8 @@ NFTs to their favorite restaurants.
                                                 </summary>
 
                                                 <span>
-                                                Each NFT will have off-chain metadata & a self-changing QR code which can be scanned by the
-restaurants to verify ownership. The discounts will be manually applied.
-At any time, you can view your NFTs at couponmint.io/profile.
+                                                Each NFT will have off-chain metadata containing info on the parlay of interest. Authorized indiviaduals can create
+                                                NFTs with info on their bet and they can sell it to other people who want to make the same expert bet as them
                                                 </span>
                                             </details>
                                             </div>
@@ -74,7 +72,7 @@ At any time, you can view your NFTs at couponmint.io/profile.
                                         <span>
                                             <img className="bg-gray-200 p-2 mb-5 rounded-full" src="https://i.ibb.co/bdGyLYk/pricetags-1.png" alt="pricetags-1" />
                                         </span>
-                                        <h1 className="pb-4 text-2xl font-semibold">Restaurants</h1>
+                                        <h1 className="pb-4 text-2xl font-semibold">Sports</h1>
                         
                                         <div className="my-5">
                                          <div className="">
@@ -82,17 +80,11 @@ At any time, you can view your NFTs at couponmint.io/profile.
                                                 
                                                 <details className="mb-4">
                                                 <summary className="font-semibold rounded-md px-4">
-                                                Why restaurants?
+                                                What Sports are currently available?
                                                 </summary>
 
                                                 <span>
-                                                We think that current NFT projects fall under two categories. Art NFTs (which have no utility) &
-NFTs that only target niche communities (NBA Topshot, Eternal.gg, etc). <br></br>
-CouponMint is different because: <br></br>
-1) Everybody eats or has eaten at a restaurant <br></br>
-2) Most people want to save money <br></br>
-We understand the challenges of targeting the masses. That’s why we’re starting with
-restaurants near colleges.
+                                               NBA,NFL,MLB,NHL
                                                 </span>
                                             </details>
                                             </div>
@@ -102,12 +94,11 @@ restaurants near colleges.
                                                 
                                                 <details className="mb-4">
                                                 <summary className="font-semibold rounded-md px-4">
-                                                How do we determine which restaurants CouponMint works with?
+                                               Where do the odds for the bets come from?
                                                 </summary>
 
                                                 <span>
-                                                TBD; we will work with any restaurant who is interested in pursuing a web3 strategy (after we
-pitch them) & who we feel have a strong customer base.
+                                                We use the odds api from the-odds-api.com to get our odds for our bets.
                                                 </span>
                                             </details>
                                             </div>
@@ -134,7 +125,7 @@ pitch them) & who we feel have a strong customer base.
                                                 </summary>
 
                                                 <span>
-                                                The restaurant decides! View each restaurant’s collection to see more details (update later).
+                                                Depends on how many authorized indiviaduals we have and how many NFTs they decide to mint at a time.
                                                 </span>
                                             </details>
                                             </div>

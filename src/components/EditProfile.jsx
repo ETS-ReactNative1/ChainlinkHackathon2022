@@ -132,7 +132,7 @@ export default function CreateItem() {
 
                     <div className="flex flex-row">
                         <Switch onChange={onChange2} />
-                        <div className="pl-3 block mb-2 text-sm font-medium">Request Restaurant Verification (Dev Mode)</div>
+                        <div className="pl-3 block mb-2 text-sm font-medium">Request Expert Verification (Dev Mode)</div>
                     </div>
 
 

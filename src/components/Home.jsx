@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Image from 'next/image';
 import ape from '../images/ape.jpg'; // Tell webpack this JS file uses this image
-import coupon from '../images/rancid_coupon.jpg'; // Tell webpack this JS file uses this image
+//import coupon from '../images/rancid_coupon.jpg'; // Tell webpack this JS file uses this image
 import Router from "next/router";
 import Link from 'next/link'
+import Bet from '../images/Bet.png'; // Tell webpack this JS file uses this image
 
 
 function Home() {
@@ -22,12 +23,12 @@ function Home() {
               <h1
                 className="p-8 text-6xl md:text-3xl lg:text-6xl font-black leading-tight"
               >
-                Buy and Sell NFTs with real-life utility
+                An NFT Marketplace for Parlay-Based NFTs
               </h1>
               <p
                 className="leading-normal text-gray-800 text-base md:text-xl lg:text-2xl"
               >
-                An NFT Marketplace specifically designed for coupon and pass-based NFTs
+                Mint and Trade NFTs with Parlay-Based Utility
               </p>
 
               <div className="grid grid-cols-4 gap-16 pt-2 ">
@@ -56,7 +57,7 @@ function Home() {
                 </div>
 
                 <div className="text-left px-1 md:px-0 w-64 h-64 col-span-1">
-                  <Image className="object-fill w-64 h-64" src={coupon} alt="Logo" />
+                  <Image className="object-fill w-64 h-64" src={Bet} alt="Logo" />
                 </div>
 
                 <div></div>

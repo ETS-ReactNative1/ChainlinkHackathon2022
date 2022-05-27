@@ -40,6 +40,7 @@ function Created() {
     const [visible, setVisibility] = useState(false);
     const [price, setPrice] = useState(1);
     const { chainId, marketAddress, contractABI, walletAddress } = useMoralisDapp();
+    const [newervisibity,setnewerVisibility]= useState(false);
     const contractProcessor = useWeb3ExecuteFunction();
     //const listItemFunction = "TLuNFTMarket";
     const listItemFunction = "createMarketItem";
@@ -237,35 +238,26 @@ function Created() {
         setVisibility(true);
     };
 
+    async function redeemNFT(nft, index) {
+        console.log("nasty index clicked!:", index)
+        console.log("nasty nft!:", nft)
+        console.log("market address:", marketAddress)
+        nft.index = index
+        //setNftToSend(nft);
+        if(newervisibity){
+        setnewerVisibility(false);
+    }else{
+        alert("already redeemed")
+        setnewerVisibility(true);
 
+
+    }
+
+    };
 
     async function deploy(nft, listPrice) {
         //console.log("nft is in collection:",nft.collection.attributes.collection_name)
-        //var h = nft.collection.attributes.
-        //var addr = nft.collection.attributes.NFTsol_addr
-        //if (typeof addr === 'undefined') {
-        //  //console.log("addr:",addr)
-        //  var token_id = await general_deploy(nft, listPrice)
-        //  await approveAll(nft)
-        //  //var listPrice2 = token_id
-        //  //var listPrice2 = []
-        //  //for (let i = 0; i < NumberNFTs; i++) {
-        //  //  listPrice2.push(String(listPrice * ("1e" + 18)));
-        //  //}
-        //  list2(nft, listPrice, token_id)
-        //
-        //  /*       var token_id = await general_deploy(nft, listPrice)
-        //        await approveAll(nft)
-        //        list(nft, listPrice, token_id)
-        //        CreatedNFTs.splice(nft.index, 1);
-        //        setCreatedNFTs(CreatedNFTs)
-        //        perform_update(nft) */
-        //} else {
-        //Smart contract for this collection already exists, so skip deploying step!
-        //alert("Starting general mint!")
-        //var token_id = await general_mint(nft, listPrice)
-        //console.log("NFT TOKEN ID:",nft.token_id)
-        //console.log("TYPE OF NFT TOKEN ID:",typeof(nft.token_id))
+
         console.log("NFT BTW:",nft)
      //   await approveAll(nft)
         //var listPrice2 = token_id
@@ -380,6 +372,9 @@ function Created() {
                                 <Tooltip title="List this NFT" key={index}>
                                     <ShoppingCartOutlined onClick={() => handleSellClick2(nft, index)} />
                                 </Tooltip>,
+                                <Tooltip title="Redeem this Parley" key={index}>
+                                <ShoppingCartOutlined onClick={() => redeemNFT(nft, index)} />
+                            </Tooltip>,
 
                             ]}
                             style={{ width: 240, border: "2px solid #e7eaf3" }}
@@ -393,7 +388,9 @@ function Created() {
                                 />
                             }
                             key={index}
+
                         >
+                            
                             {/* <div className="div pb-1">{nft.collection.attributes.collection_name}</div> */}
                             <div className="div pb-1">{nft.collection.collection_name}</div>
                             <Meta title={nft.name} description={`#${nft.token_id}`} />

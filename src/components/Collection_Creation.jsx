@@ -20,6 +20,7 @@ function Collection_Creation() {
     const [loaded, setLoaded] = useState('false')
     const [restaurants, setRestaurants] = useState([])
     const { Option } = Select;
+    const [Team1, setTeam1] = useState(["NBA","MLB","NHL","NFL"])
 
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -28,6 +29,8 @@ function Collection_Creation() {
     //This hook just loads all the restaurants the current user is managing (it is )
     useEffect(() => {
         if (loaded == 'false') {
+
+
             if (typeof (walletAddress) == "string") {
                 check_for_multiple_restaurants().then(function (res) {
                     try {
@@ -228,8 +231,8 @@ function Collection_Creation() {
                     <h1 className="text-4xl font-bold mt-0 mb-2 ">Create Collection of NFTs</h1>
                 </div>
 
-                <div className="block mb-2 text-sm font-medium pt-3">You can create collections of NFTs for organization purposes</div>
-                <div className="block mb-2 text-sm font-medium pt-3">Ex: Different restaurant locations can have different collections with different coupon types. Note this is optional</div>
+                <div className="block mb-2 text-sm font-medium pt-3">You can create collections of NFTs for organizing your bets</div>
+                <div className="block mb-2 text-sm font-medium pt-3">Your collection can be viewed by other people to build your rep!</div>
 
                 <form onSubmit={preventRefresh}>
 
@@ -237,11 +240,11 @@ function Collection_Creation() {
                     <div className="form-group">
                         <div className="mb-6 pt-5">
                             <label htmlFor="username-success" className="block mb-2 text-sm font-medium">Your collection name</label>
-                            <input type="text" id="username-success" className=" border  text-sm rounded-lg  block w-full p-2.5 dark:bg-green-100 dark:border-green-400" placeholder="Example: $1 Menu"
+                            <input type="text" id="username-success" className=" border  text-sm rounded-lg  block w-full p-2.5 dark:bg-green-100 dark:border-green-400" placeholder="Ex: ZL's GOAT bets"
                                 onChange={e => updateFormInput({ ...formInput, CollectionName: e.target.value })} required />
                         </div>
                         <div className="input-group mb-3 pt-3">
-                            <label htmlFor="username-success" className="block mb-2 text-sm font-medium">Select Restaurant</label>
+                            <label htmlFor="username-success" className="block mb-2 text-sm font-medium">Select Sport</label>
                             <Select
                                 showSearch
                                 style={{
@@ -252,11 +255,12 @@ function Collection_Creation() {
                                 optionFilterProp="children"
                                 onChange={e => updateFormInput({ ...formInput, RestaurantObjectId: e })}
                             >
-                                {restaurants &&
-                                    restaurants.map((restaurant, i) =>
-                                        <Option value={restaurant.id} key={restaurant.id}>{restaurant.name + " (" + restaurant.addr + ", " + restaurant.city + ", " + restaurant.state + ")"}</Option>
-                                    )
-                                }
+                 {Team1 &&
+                  Team1.map((arr, i) =>
+                   <Option value={arr} key={i}>{arr}</Option>
+                            
+                           )
+                }
                             </Select>
                         </div>
                         <div className="mb-6 pt-5">
@@ -288,35 +292,7 @@ function Collection_Creation() {
                     <div className='pt-7'>
                         <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" onClick={validate_form_server_side}>  Save Collection</button>
                     </div>
-                    <div>HIIIII</div>
-                    <div className='p-7'>
-                        <Link href={'/profile/' + "0x3204ce447d0e70f0b3fda25ce134c67314f36c7a" + "?tab=" + "collected"} key={0} className='pt-15'>
-                            <h3 className="text-purple-600 font-semibold text-lg text-center md:text-left " >0x0e22c29e5f4569867cdbb3ab12a471006859308a</h3>
-                        </Link>
-                    </div>
-                    <ul>
-                        <li>
-                            <Link href="/post/abc">
-                                <a>Go to pages/post/[pid].js</a>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/post/abc?foo=bar">
-                                <a>Also goes to pages/post/[pid].js</a>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/post/abc/a-comment">
-                                <a>Go to pages/post/[pid]/[comment].js</a>
-                            </Link>
-                        </li>
-                    </ul>
-                    <div className='pt-7'>
-                        TEST
-                    </div>
-                    <div className='pt-7'>
-                        TEST
-                    </div>
+                    
                 </form>
 
             </div>

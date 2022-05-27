@@ -249,6 +249,7 @@ function Created({ wallet_addr = "0x3204ce447d0e70f0b3fda25ce134c67314f36c7a", q
                                 <Tooltip title="View this NFT" key={index}>
                                     <ShoppingCartOutlined onClick={() => handleSellClick2(nft, index)} />
                                 </Tooltip>,
+                 
 
                             ]}
                             style={{ width: 240, border: "2px solid #e7eaf3" }}

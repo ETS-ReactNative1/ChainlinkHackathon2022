@@ -205,7 +205,10 @@ function CreatePass() {
   const [ChoosenTeam1, setchoosenTeam1] = useState("")
   const [ChoosenTeam2, setchoosenTeam2] = useState("")
   const [chosenDate, setchosenDate] = useState("")
+  const [BetAmount, setBetAmount] = useState("")
+  const [Underbool, setunder] = useState(false)
 
+  
   
 
   const [url, seturl] = useState("https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?regions=us&oddsFormat=american&apiKey=a218e281dc52ddab7c880948776e7c0f")
@@ -233,7 +236,7 @@ const [placeholdertext2, setplaceholdertext2] = useState("NA");
     canvasEle.height = canvasEle.clientHeight;
     canvasEle.width =400
 
-   // canvasEle.height = 400
+   //canvasEle.height = 200
     // get context of the canvas
     ctx = canvasEle.getContext("2d");
   }, []);
@@ -260,10 +263,11 @@ const [placeholdertext2, setplaceholdertext2] = useState("NA");
     }
     arr.push(coll)
     setTeamGames(arr)
-    writeText({ text: 'Date : ', x: 10, y: 10, colors: "green"});
-    writeText({ text: 'Team 1 : ', x: 10, y: 40, colors: "green"});
-    writeText({ text: 'Team 2 : ', x: 10, y: 70, colors: "green" });
-    writeText({ text: "NA", x: 10, y: 110, colors: "green"});
+    writeText({ text: 'Bet Amount : ', x: 10, y: 5, colors: "green"});
+    writeText({ text: 'Date : ', x: 10, y: 30, colors: "green"});
+    writeText({ text: 'Team 1 : ', x: 10, y: 55, colors: "green"});
+    writeText({ text: 'Team 2 : ', x: 10, y: 80, colors: "green" });
+    writeText({ text: "NA", x: 10,y: 105, colors: "green"});
     const canvasEle = canvas.current;
 
    }, []);
@@ -362,11 +366,6 @@ const [placeholdertext2, setplaceholdertext2] = useState("NA");
     if (formInput.name.length == 0 ) {
       alert("Please fill out name!")
       //Do nothing --> client warns them to fill it out!
-      //console.log("Empty Collection Name!")
-    // } else if (CouponFileUrl == null) {
-    //   alert("Please attach a coupon image!")
-    // } else if (fileUrl == null) {
-      //alert("Please attach a promotional art image!")
     }
 
     else {
@@ -378,7 +377,12 @@ const [placeholdertext2, setplaceholdertext2] = useState("NA");
     console.log(newloc)
     var imageURI="";
     var metadataURI = "";
-    var currentdesctiption="Date:"+chosenDate+",Team1:"+ChoosenTeam1+",Team2:"+ChoosenTeam2+",Odds:"+placeholdertext+",Over:"+placeholdertext2
+    if(Underbool){
+    var currentdesctiption="Date:"+chosenDate+",Team1:"+ChoosenTeam1+",Team2:"+ChoosenTeam2+",Odds:"+placeholdertext+",Under:"+placeholdertext2+",Bet Amount:"+BetAmount
+    }else{
+      var currentdesctiption="Date:"+chosenDate+",Team1:"+ChoosenTeam1+",Team2:"+ChoosenTeam2+",Odds:"+placeholdertext+",Over:"+placeholdertext2+",Bet Amount:"+BetAmount
+
+    }
     //alert("image uri:",imageURI)
     let metadata = {
       "name": formInput.name,
@@ -503,6 +507,12 @@ console.log(metadata)
 
   }
   async function pullodds() {
+    if (Team2 == "" || Team1 =="") {
+      alert("please choose your teams to pull odds!")
+
+    }
+
+    else {
     const web3Modal = new Web3Modal()
     const connection = await web3Modal.connect()
     const provider = new ethers.providers.Web3Provider(connection)    
@@ -543,9 +553,9 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
      // get context of the canvas
      ctx = canvasEle.getContext("2d");
 
-    writeText({ text: placeholdertext, x: 10, y: 110, colors: "white"});
+    writeText({ text: placeholdertext, x: 10,y: 105, colors: "white"});
 
-    writeText({ text: odds, x: 10, y: 110, colors: "green"});
+    writeText({ text: odds, x: 10,y: 105, colors: "green"});
     
     setplaceholdertext(odds)
     setnewloc(canvasEle.toDataURL( "image/png"));
@@ -553,7 +563,14 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
     console.log(newloc)
     setFileUrl(newloc)
   }
+}
   async function pullPointsover() {
+    if (Team2 == "" || Team1 =="") {
+      alert("please choose your teams to pull points!")
+
+    }
+
+    else {
     const web3Modal = new Web3Modal()
     const connection = await web3Modal.connect()
     const provider = new ethers.providers.Web3Provider(connection)    
@@ -592,17 +609,25 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
      // get context of the canvas
      ctx = canvasEle.getContext("2d");
 
-    writeText({ text: placeholdertext2, x: 10, y: 140, colors: "white"});
+    writeText({ text: placeholdertext2, x: 10, y: 130, colors: "white"});
 
-    writeText({ text: odds, x: 10, y: 140, colors: "green"});
+    writeText({ text: odds, x: 10, y: 130, colors: "green"});
     
     setplaceholdertext2(odds)
+    setunder(false)
+
     setnewloc(canvasEle.toDataURL( "image/png"));
     setImageUrl(newloc)
     console.log(newloc)
     setFileUrl(newloc)
   }
+}
   async function pullPointsunder() {
+    if (Team2 == "" || Team1 =="") {
+      alert("please choose your teams to pull points!")
+    }
+
+    else {
     const web3Modal = new Web3Modal()
     const connection = await web3Modal.connect()
     const provider = new ethers.providers.Web3Provider(connection)    
@@ -642,16 +667,18 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
      // get context of the canvas
      ctx = canvasEle.getContext("2d");
 
-    writeText({ text: placeholdertext2, x: 10, y: 140, colors: "white"});
+    writeText({ text: placeholdertext2, x: 10,  y: 130, colors: "white"});
 
-    writeText({ text: odds, x: 10, y: 140, colors: "green"});
+    writeText({ text: odds, x: 10,  y: 130, colors: "green"});
     
     setplaceholdertext2(odds)
+    setunder(true)
     setnewloc(canvasEle.toDataURL( "image/png"));
     setImageUrl(newloc)
     console.log(newloc)
     setFileUrl(newloc)
   }
+}
   async function sendlink() {
 
 
@@ -694,9 +721,9 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
     // canvasEle.height = 400
      // get context of the canvas
      ctx = canvasEle.getContext("2d");
-     writeText({ text: chosenDate, x: 100, y: 10, colors: "white"});
+     writeText({ text: chosenDate, x: 100, y: 30, colors: "white"});
 
-     writeText({ text: e, x: 70, y: 10, colors: "green"});
+     writeText({ text: e, x: 70, y: 30, colors: "green"});
 
     
     setnewloc(canvasEle.toDataURL( "image/png"));
@@ -718,9 +745,9 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
     // canvasEle.height = 400
      // get context of the canvas
      ctx = canvasEle.getContext("2d");
-     writeText({ text: ChoosenTeam1, x: 100, y: 40, colors: "white"});
+     writeText({ text: ChoosenTeam1, x: 100, y: 55, colors: "white"});
 
-     writeText({ text: e, x: 100, y: 40, colors: "green"});
+     writeText({ text: e, x: 100, y: 55, colors: "green"});
 
     
     setnewloc(canvasEle.toDataURL( "image/png"));
@@ -742,9 +769,9 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
     // canvasEle.height = 400
      // get context of the canvas
      ctx = canvasEle.getContext("2d");
-     writeText({ text: ChoosenTeam2, x: 100, y: 70, colors: "white"});
+     writeText({ text: ChoosenTeam2, x: 100, y: 80, colors: "white"});
 
-     writeText({ text: e, x: 100, y: 70, colors: "green"});
+     writeText({ text: e, x: 100, y: 80, colors: "green"});
 
     
     setnewloc(canvasEle.toDataURL( "image/png"));
@@ -753,6 +780,29 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
     setFileUrl(newloc)
 
     setchoosenTeam2(e)
+
+
+
+  }
+  async function chooseamount(e) {
+
+    const canvasEle = canvas.current;
+
+
+    // canvasEle.height = 400
+     // get context of the canvas
+     ctx = canvasEle.getContext("2d");
+     writeText({ text: ChoosenTeam2, x: 130, y: 5, colors: "white"});
+
+     writeText({ text: e, x: 130, y: 5, colors: "green"});
+
+    
+    setnewloc(canvasEle.toDataURL( "image/png"));
+    setImageUrl(newloc)
+    console.log(newloc)
+    setFileUrl(newloc)
+
+    setBetAmount(e)
 
 
 
@@ -792,7 +842,7 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
 
             <div className="mb-6 pt-5">
               <label htmlFor="username-success" className="block mb-2 text-sm font-medium">Your NFT name</label>
-              <input type="text" id="username-success" className=" border  text-sm rounded-lg  block w-full p-2.5 dark:bg-green-100 dark:border-green-400" placeholder="Example: McNuggets"
+              <input type="text" id="username-success" className=" border  text-sm rounded-lg  block w-full p-2.5 dark:bg-green-100 dark:border-green-400" placeholder="Ex: My new fav bet"
                 onChange={e => updateFormInput({ ...formInput, name: e.target.value })} required />
 
             </div>
@@ -815,6 +865,12 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
                   )
                 }
               </Select>
+            </div>
+            <div className="mb-6 pt-5">
+              <label htmlFor="username-success" className="block mb-2 text-sm font-medium">Bet Amount</label>
+              <input type="text" id="username-success" className=" border  text-sm rounded-lg  block w-full p-2.5 dark:bg-green-100 dark:border-green-400" placeholder="Amount in MATIC"
+                onChange={e => chooseamount(e.target.value)} required />
+
             </div>
             <div className="input-group mb-3 pt-3">
               <label htmlFor="username-success" className="block mb-2 text-sm font-medium">Date of Match</label>
@@ -891,14 +947,15 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
 
           </div>
               
-          <div>
-          <h1 className="text-2xl  mt-0 mb-2 pt-3">Current NFT IMAGE BELOW:</h1>
+          <div className="relative" style={{  height: "300px", width:"800px" }}>
+          <div className="absolute">
+
+          <h1 className="text-2xl  mt-0 mb-2 pt-3">Bet Description NFT image:</h1>
           <canvas ref={canvas}></canvas>
             </div>
-
-            </div>
-            <div className="w-500 h-700">
-                <h1 className="text-2xl  mt-0 mb-2 pt-3">Alternative nft image (optional)</h1>
+  
+            <div className="absolute ml-20 flex flex-col justify-between " style={{ marginLeft: "400px",width:"800px" }}>
+                <h1 className="text-2xl  mt-0 mb-2 pt-3">Alternative NFT image (optional)</h1>
 
                 <div className="flex w-full h-full">
                   <label className="box-border h-64 w-64 border-2 border-dashed border-black hover:bg-gray-300 place-items-center">
@@ -920,8 +977,10 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
 
 
               </div>
+            </div>
+            </div>
 
-          <div className='pt-7'>
+          <div className='pt-4'>
             <button type="button" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" onClick={validate_form_server_side}>  Create NFT</button>
           </div>
         </form>
