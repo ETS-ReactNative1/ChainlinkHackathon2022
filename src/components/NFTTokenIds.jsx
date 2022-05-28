@@ -319,11 +319,12 @@ function NFTTokenIds({ inputValue, setInputValue }) {
                         name: res[i].collection_name,
                         addrs: res[i].NFTsol_addr,
                         //These fields are from our joined results! --> have access to all restaurant fields
-                        street_addr: res[i].collection_restaurant[0].address,
-                        city: res[i].collection_restaurant[0].city,
-                        state: res[i].collection_restaurant[0].state,
-                        
-                      
+                      //  street_addr: res[i].collection_restaurant[0].address,
+                      //  city: res[i].collection_restaurant[0].city,
+                       // state: res[i].collection_restaurant[0].state,
+                       street_addr:"",
+                       city: "",
+                       state:"NBA"
                     }
                     arr.push(coll)
                 }
@@ -738,7 +739,7 @@ function NFTTokenIds({ inputValue, setInputValue }) {
                                 key={index}
                             >
                                 <Meta title={nft.name} />
-                                <div className="div">{nft.street_addr}, {nft.city}, {nft.state} </div>
+                                <div className="div">{nft.street_addr} {nft.city} {nft.state} </div>
 
                             </Card>
                         ))}

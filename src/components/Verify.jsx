@@ -18,7 +18,7 @@ export default function CreateItem() {
     const [fileUrl, setFileUrl] = useState(null)
     const [ImageUrl, setImageUrl] = useState(null)
     //const [formInput, updateFormInput] = useState({ username: '' , restaurant_name: '', state: '', zip_code: '', country: '', owner:'', manager: '', email : '', country: ''})
-    const [formInput, updateFormInput] = useState({ restaurant_name: '', owner: '', manager: '', email: '', address: '', state: '', city: '', zip_code: '', country: '' })
+    const [formInput, updateFormInput] = useState({ restaurant_name: 'ttt', owner: 't', manager: 't', email: '', address: 't', state: '', city: '', zip_code: '', country: '' })
 
     const { Moralis, enableWeb3 } = useMoralis();
     const { chainId } = useMoralisDapp();
@@ -55,6 +55,7 @@ export default function CreateItem() {
 
 
     async function upload() {
+
         if (isAuthenticated) {
             upload_auth()
         } else {
@@ -70,6 +71,7 @@ export default function CreateItem() {
         //const currentUser = Moralis.User.current();
         //console.log("CURRENT USER:",currentUser)
         console.log("formInput:", formInput)
+
         //query.equalTo("user", currentUser)
         query.equalTo("restaurant_name", formInput.restaurant_name)
         query.equalTo("owner", formInput.owner)
@@ -80,8 +82,9 @@ export default function CreateItem() {
         query.equalTo("city", formInput.city)
         query.equalTo("zip_code", formInput.zip_code)
         query.equalTo("country", formInput.country)
-        await query.find().then((res) => {
-            if (res == 0) {
+        var res= await query.find()
+
+            if (res.length == 0) {
                 //alert("res is 0!")
                 const rest = new Restaurant();
                 //rest.set("user", currentUser)
@@ -102,18 +105,16 @@ export default function CreateItem() {
                 console.log("params:", params)
                 sendEmailToCouponMint(params)
                 sendEmailToRestaurant(params)
-                //alert("Successfully sent request!")
+                alert("Successfully sent request!")
                 Router.push({
                     pathname: '/nftmarketplace',
-                    query: { id: "explore"},
+                   query: { id: "explore"},
                 })
+            }else{
+                        alert("already exists!")
             }
 
 
-        }, (error) => {
-            // The object was not retrieved successfully.
-            // error is a Moralis.Error with an error code and message.
-        });
     }
 
 
@@ -133,8 +134,9 @@ export default function CreateItem() {
         query.equalTo("city", formInput.city)
         query.equalTo("zip_code", formInput.zip_code)
         query.equalTo("country", formInput.country)
-        await query.find().then((res) => {
-            if (res == 0) {
+        var res= await query.find()
+        console.log(res)
+            if (res.length == 0) {
                 //alert("res is 0!")
                 const rest = new Restaurant();
                 rest.set("user", currentUser)
@@ -155,18 +157,15 @@ export default function CreateItem() {
                 console.log("params:", params)
                 sendEmailToCouponMint(params)
                 sendEmailToRestaurant(params)
-                //alert("Successfully sent request!")
+                alert("Successfully sent request!")
                 Router.push({
-                    pathname: '/nftmarketplace',
+                   pathname: '/nftmarketplace',
                     query: { id: "explore"},
-                })
-            }
+               })
+            }else{
+                alert("already exists!")
+    }
 
-
-        }, (error) => {
-            // The object was not retrieved successfully.
-            // error is a Moralis.Error with an error code and message.
-        });
     }
 
     async function sendEmailToCouponMint(params) {
@@ -183,25 +182,27 @@ export default function CreateItem() {
         }
         catch (e) {
             console.log("error!1", e)
-            alert("david1")
+   
         }
     }
 
     async function sendEmailToRestaurant(params) {
         //await Moralis.Cloud.run("sendEmailToSeller", params); 
+        console.log("here")
 
+        console.log(params)
         try {
 
             await Moralis.Cloud.run("sendVerificationRequestToRestaurant", params);
             //await Moralis.Cloud.run("sendEmailToUser",params);
             //console.log("")
             //alert("Successfully sent email to Restaurant!")
-            //alert("Successfully sent request!")
+            alert("Successfully sent request!")
 
         }
         catch (e) {
             console.log("error!2", e)
-            alert("david2")
+        
         }
     }
 
@@ -265,15 +266,6 @@ export default function CreateItem() {
                             onChange={e => updateFormInput({ ...formInput, country: e.target.value })} />
                         {/* <p className="mt-2 text-sm text-green-600 dark:text-green-500"><span className="font-medium">Alright!</span> Collection Name available!</p> */}
                     </div>
-
-
-
-
-
-
-
-
-
                 </div>
 
 

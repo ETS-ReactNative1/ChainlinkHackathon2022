@@ -5,6 +5,7 @@ import { useMoralisDapp } from "providers/MoralisDappProvider/MoralisDappProvide
 import { Select } from 'antd';
 import { useRouter } from 'next/router'
 import Link from "next/link";
+import ErrorPage from "./ErrorPage";
 
 
 
@@ -12,7 +13,7 @@ function Collection_Creation() {
     const [fileUrl, setFileUrl] = useState(null)
     const [ImageUrl, setImageUrl] = useState(null)
     const [formInput, updateFormInput] = useState({ price: '', name: '', description: '', CollectionName: '', TokenName: '', RestaurantObjectId: '', })
-    const { Moralis } = useMoralis();
+    const { Moralis ,isAuthenticated} = useMoralis();
     const { walletAddress, chainId } = useMoralisDapp();
     //const navigate = useNavigate();
     const [rand, setRand] = useState('rand!')
@@ -21,6 +22,7 @@ function Collection_Creation() {
     const [restaurants, setRestaurants] = useState([])
     const { Option } = Select;
     const [Team1, setTeam1] = useState(["NBA","MLB","NHL","NFL"])
+    const [UserType, setUserType] = useState("explore");
 
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -32,6 +34,8 @@ function Collection_Creation() {
 
 
             if (typeof (walletAddress) == "string") {
+                request()
+
                 check_for_multiple_restaurants().then(function (res) {
                     try {
                         setRestaurants(res)
@@ -48,7 +52,33 @@ function Collection_Creation() {
         }
     });
 
-
+    const request = async () => {
+        //Quick fix: I put this in a try catch since sometimes there are parse.initialize errors 
+        //(this happens when moralis doesn't get initialized fast enough with the useMoralis() and enableWeb3() calls)
+        //There's probably a cleaner solution, but for now this works 
+        try {
+          const User = Moralis.Object.extend("User");
+          const query = new Moralis.Query(User);
+          const currentUser = Moralis.User.current();
+          //console.log("current user:", currentUser)
+          await query.get(currentUser.id).then((res) => {
+            // console.log("profile:", res)
+            //FIX LOADING LOGIC!!!!!!
+            if (res.attributes.user_type.length > 0) {
+              //console.log("GOLDEN USER TYPE:", res.attributes.user_type)
+              setUserType(res.attributes.user_type)
+            } else {
+              setUserType("client")
+            }
+          }, (error) => {
+            // The object was not retrieved successfully.
+            // error is a Moralis.Error with an error code and message.
+          });
+        }
+        catch (e) {
+        }
+    
+      }
     async function check_for_multiple_restaurants() {
         //console.log("check!!")
         //console.log("Fetching profile image!")
@@ -220,7 +250,7 @@ function Collection_Creation() {
         event.preventDefault();
     }
 
-
+    if(isAuthenticated && UserType=="restaurant"){
     return (
         <>
             <div className="container">
@@ -301,7 +331,10 @@ function Collection_Creation() {
         </>
     );
 
-
+}else {
+    return <ErrorPage />;
+  
+  }
 }
 
 export default Collection_Creation;

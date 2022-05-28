@@ -7,6 +7,7 @@ import Created from "components/Created";
 import Listed from "components/Listed";
 import ListedClient from "components/ListedClient";
 import Bought from "components/Bought";
+import { useMoralisDapp } from "../providers/MoralisDappProvider/MoralisDappProvider";
 
 import ProfileQuery from "components/ProfileQuery";
 
@@ -82,9 +83,10 @@ function Profile({ wallet_addr = "", tab_num = "collected", curr_user_match = fa
     const [price, setPrice] = useState(1);
     const { TabPane } = Tabs;
 
-    //const { chainId, walletAddress } = useMoralisDapp();
+    //const { chainId, wallet_addr } = useMoralisDapp();
 
-    const [walletAddress, setWalletAddress] = useState(false);
+   // const [wallet_addr, setwallet_addr] = useState(false);
+   // const { wallet_addr } = useMoralisDapp();
 
     const contractProcessor = useWeb3ExecuteFunction();
 
@@ -96,7 +98,7 @@ function Profile({ wallet_addr = "", tab_num = "collected", curr_user_match = fa
 
     const [activeTabProf, setActiveTabProf] = useState(tab_num);
 
-    //const walletAddress ="0x742384239kfafeafeak"
+    //const wallet_addr ="0x742384239kfafeafeak"
 
     const [userType, setUserType] = useState('client')
 
@@ -183,7 +185,7 @@ function Profile({ wallet_addr = "", tab_num = "collected", curr_user_match = fa
             try {
                 const currentUser = Moralis.User.current();
                 console.log("CURRENT USER BTW:", currentUser)
-                var params = { addr: currentUser.get("ethAddress") }
+                var params = { addr: currentUser?.get("ethAddress") || "0x2afe08789751e51f55fe1c0aabb0d89e6fa7e997"}
             } catch(e) {
                 var params = { addr: wallet_addr }
             }
@@ -431,9 +433,10 @@ asaxa
                             <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" >  Cloud</button>
                         </div> */}
                         <h1 className="font-bold text-3xl pt-4">{username}</h1>
+                        <div className="text-gray-500 font-medium ">{wallet_addr.slice(0, 6) + "..." + wallet_addr.slice(wallet_addr.length - 4, wallet_addr.length)}</div>
 
 
-                        <div className="text-gray-500 font-medium ">{Moralis.User.current().get("ethAddress").slice(0, 6) + "..." + Moralis.User.current().get("ethAddress").slice(Moralis.User.current().get("ethAddress").length - 4, Moralis.User.current().get("ethAddress").length)}</div>
+                        {/* <div className="text-gray-500 font-medium ">{Moralis.User.current()?.get("ethAddress").slice(0, 6) + "..." + Moralis.User.current()?.get("ethAddress").slice(Moralis.User.current()?.get("ethAddress").length - 4, Moralis.User.current()?.get("ethAddress").length)}</div> */}
                         <div className="text-gray-500 font-medium">Joined May 2022</div>
                     </div>
 
@@ -485,7 +488,9 @@ asaxa
 
                         </label>
                         <h1 className="font-bold text-3xl pt-4">{username}</h1>
-                        <div className="text-gray-500 font-medium ">{Moralis.User.current().get("ethAddress").slice(0, 6) + "..." + Moralis.User.current().get("ethAddress").slice(Moralis.User.current().get("ethAddress").length - 4, Moralis.User.current().get("ethAddress").length)}</div>
+                        <div className="text-gray-500 font-medium ">{wallet_addr.slice(0, 6) + "..." + wallet_addr.slice(wallet_addr.length - 4, wallet_addr.length)}</div>
+
+                        {/* <div className="text-gray-500 font-medium ">{Moralis.User.current().get("ethAddress").slice(0, 6) + "..." + Moralis.User.current()?.get("ethAddress").slice(Moralis.User.current()?.get("ethAddress").length - 4, Moralis.User.current()?.get("ethAddress").length)}</div> */}
                         <div className="text-gray-500 font-medium">Joined May 2022</div>
                     </div>
                     {/* <div class='pt-7'>

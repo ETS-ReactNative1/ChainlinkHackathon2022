@@ -1,8 +1,8 @@
 import Verify from "../components/Verify";
 import React from "react";
 
-function restaurantverification() {
+function expertverification() {
 	return <Verify />;
 }
 
-export default restaurantverification;
+export default expertverification;

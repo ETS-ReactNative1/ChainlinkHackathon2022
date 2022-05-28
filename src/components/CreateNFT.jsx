@@ -2,7 +2,7 @@ import React, { useRef,useState, useEffect } from "react";
 import { useMoralis } from "react-moralis";
 import { Select } from 'antd';
 import { useMoralisDapp } from "providers/MoralisDappProvider/MoralisDappProvider";
-import { Icon } from "antd";  //missing Image
+//import { Icon } from "antd";  //missing Image
 import  Router from "next/router";
 
 
@@ -357,7 +357,6 @@ function CreateNFT() {
                       <div className="flex w-full h-full justify-center items-center">
                         <div className="flex w-full h-full justify-center items-center" >
 
-                          <Icon type="file-image" width="5em" height="5em" style={{ fontSize: '500%' }} theme="outlined" />
                         </div>
                       </div>
                     </div>
@@ -380,7 +379,6 @@ function CreateNFT() {
                       <div className="flex w-full h-full justify-center items-center">
                         <div className="flex w-full h-full justify-center items-center" >
 
-                          <Icon type="file-image" width="5em" height="5em" style={{ fontSize: '500%' }} theme="outlined" />
                         </div>
                       </div>
                     </div>

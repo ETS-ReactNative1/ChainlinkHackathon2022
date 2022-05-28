@@ -6,6 +6,7 @@ import Router from "next/router";
 import Web3Modal from "web3modal"
 import { ethers} from 'ethers'
 import { ConsoleSqlOutlined } from "@ant-design/icons";
+import ErrorPage from "./ErrorPage";
 
 
 
@@ -22,11 +23,12 @@ function CreatePass() {
 
   const [formInput, updateFormInput] = useState({ price: '', name: '', description: '', CollectionName: '', TokenName: '' })
   const [teamsinfo, updateteamsinfo] = useState(0)
+  const [UserType, setUserType] = useState("explore");
 
   const [inputValue, setInputValue] = useState("");
   const { Option } = Select;
   const { chainId } = useMoralisDapp();
-  const { Moralis} = useMoralis();
+  const { Moralis,isAuthenticated} = useMoralis();
   const nftabi=[
     {
       "inputs": [],
@@ -271,7 +273,33 @@ const [placeholdertext2, setplaceholdertext2] = useState("NA");
     const canvasEle = canvas.current;
 
    }, []);
- 
+   const request = async () => {
+    //Quick fix: I put this in a try catch since sometimes there are parse.initialize errors 
+    //(this happens when moralis doesn't get initialized fast enough with the useMoralis() and enableWeb3() calls)
+    //There's probably a cleaner solution, but for now this works 
+    try {
+      const User = Moralis.Object.extend("User");
+      const query = new Moralis.Query(User);
+      const currentUser = Moralis.User.current();
+      //console.log("current user:", currentUser)
+      await query.get(currentUser.id).then((res) => {
+        // console.log("profile:", res)
+        //FIX LOADING LOGIC!!!!!!
+        if (res.attributes.user_type.length > 0) {
+          //console.log("GOLDEN USER TYPE:", res.attributes.user_type)
+          setUserType(res.attributes.user_type)
+        } else {
+          setUserType("client")
+        }
+      }, (error) => {
+        // The object was not retrieved successfully.
+        // error is a Moralis.Error with an error code and message.
+      });
+    }
+    catch (e) {
+    }
+
+  }
   // write a text
   const writeText = (info, style = {}) => {
     const { text, x, y,colors } = info;
@@ -292,6 +320,8 @@ const [placeholdertext2, setplaceholdertext2] = useState("NA");
     if (loadedCollections === 'false') {
 
       try {
+        request()
+
         //console.log("HERE IN COLLECTIONS!!!!!")
         const CollectionsTracker = Moralis.Object.extend("CollectionsTracker");
         const query = new Moralis.Query(CollectionsTracker);
@@ -828,7 +858,7 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
       setnewloc(imageURI)
     }
 
-
+if(isAuthenticated && UserType=="restaurant"){
   return (
     <>
       <div className="container">
@@ -997,6 +1027,10 @@ var localurl="https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?region
 
     </>
   );
+}else {
+  return <ErrorPage />;
+
+}
 }
 
 export default CreatePass
