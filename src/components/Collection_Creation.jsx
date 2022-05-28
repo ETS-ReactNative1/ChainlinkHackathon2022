@@ -184,7 +184,7 @@ function Collection_Creation() {
                     coll.save();
                     //navigate("/");
                     //alert("successfully saved collection!")
-                    router.push('CreatePass');
+                    router.push('createpass');
 
                 } else {
                     alert("Collection with this name already exists! Please choose another collection name!")
